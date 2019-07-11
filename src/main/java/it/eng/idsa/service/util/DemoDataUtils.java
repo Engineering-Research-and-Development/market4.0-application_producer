@@ -14,7 +14,7 @@ public final class DemoDataUtils {
 
     private static final String ENGINEERING_IDSA_MESSAGE = "*** Engineering IDSA using base-connector *** Hello World message %s !";
 
-    private static String BROKER = "tcp://192.168.56.101:61816";
+    private static String BROKER = "tcp://192.168.56.102:61816";
 
     public static String buildDummyMessage(int value) {
         return String.format(ENGINEERING_IDSA_MESSAGE, value);
