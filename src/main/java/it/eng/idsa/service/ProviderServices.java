@@ -16,11 +16,13 @@ import org.apache.log4j.Logger;
 
 import it.eng.idsa.MessageProducerApp;
 import it.eng.idsa.service.util.ServiceResult;
+import it.eng.idsa.service.util.PropertiesConfig;
 
 
 
 @Path("provider")
 public class ProviderServices {
+	private static final PropertiesConfig CONFIG_PROPERTIES = PropertiesConfig.getInstance();
 	private static Logger logger = Logger.getLogger(ProviderServices.class.getName());
     private static final ExecutorService executor = Executors.newFixedThreadPool(5);
 
@@ -39,7 +41,7 @@ public class ProviderServices {
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getIt() {
-		return "GET Provider Service: got it!!";
+		return CONFIG_PROPERTIES.getProperty("get");
 	}
 
 	@DELETE
@@ -48,7 +50,7 @@ public class ProviderServices {
 		//producingThread.interrupt();
 		MessageProducerApp messageProducerApp=new MessageProducerApp();
 		messageProducerApp.deactivateProducing();
-		return "DELETE Provider Service: got it!!";
+		return CONFIG_PROPERTIES.getProperty("delete");
 	}
 
 	
@@ -59,11 +61,11 @@ public class ProviderServices {
 		ServiceResult serviceResult=new ServiceResult();
 		logger.debug("token ="+token);
 		if ((token==null)||(token.isEmpty())) {
-			serviceResult.setResult("KO");
-			serviceResult.setMessage("Token not valid!");
+			serviceResult.setResult(CONFIG_PROPERTIES.getProperty("ko"));
+			serviceResult.setMessage(CONFIG_PROPERTIES.getProperty("tokenNotValid"));
 			return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).entity(serviceResult).build();
 		}
-		serviceResult.setResult("OK");
+		serviceResult.setResult(CONFIG_PROPERTIES.getProperty("ok"));
 		executor.execute(producingThread);
 		//producingThread.start();
 		return Response.status(Response.Status.ACCEPTED.getStatusCode()).entity(serviceResult).build();

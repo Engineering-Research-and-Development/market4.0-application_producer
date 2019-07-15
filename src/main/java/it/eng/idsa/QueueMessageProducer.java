@@ -19,6 +19,8 @@ import it.eng.idsa.service.util.DemoDataUtils;
  * Message producer which sends the message to ActiveMQ Broker
  */
 public class QueueMessageProducer {
+	private static final String PRODUCER_SENT_MESSAGE = "Producer sent text message:";
+
 	private static Logger logger = Logger.getLogger(QueueMessageProducer.class.getName());
 
     private String activeMqBrokerUri;
@@ -50,7 +52,7 @@ public class QueueMessageProducer {
             for (int i = 1; i <= DemoDataUtils.NUMBER_OF_MESSAGES; i++) {
                 TextMessage textMessage = session.createTextMessage(DemoDataUtils.buildDummyMessage(i));
                 msgProducer.send(textMessage);
-                logger.debug("Producer sent text message:" + textMessage.getText());
+                logger.debug(PRODUCER_SENT_MESSAGE + textMessage.getText());
                 try {
                     Thread.sleep(10000); // sleep for 10 seconds
                 } catch (InterruptedException e) {
@@ -134,7 +136,7 @@ public class QueueMessageProducer {
             while(!stop) {	
                 TextMessage textMessage = session.createTextMessage(DemoDataUtils.buildDummyMessage(i));
                 msgProducer.send(textMessage);
-                logger.debug("Producer sent text message:" + textMessage.getText());
+                logger.debug(PRODUCER_SENT_MESSAGE + textMessage.getText());
                 try {
                     Thread.sleep(10000); // sleep for 10 seconds
                 } catch (InterruptedException e) {
