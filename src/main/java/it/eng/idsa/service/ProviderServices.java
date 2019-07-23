@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
+import it.eng.idsa.DAPSInteraction;
 import it.eng.idsa.MessageProducerApp;
 import it.eng.idsa.service.util.ServiceResult;
 import it.eng.idsa.service.util.PropertiesConfig;
@@ -64,6 +65,11 @@ public class ProviderServices {
 			serviceResult.setResult(CONFIG_PROPERTIES.getProperty("ko"));
 			serviceResult.setMessage(CONFIG_PROPERTIES.getProperty("tokenNotValid"));
 			return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).entity(serviceResult).build();
+		}
+		DAPSInteraction dapsInteraction=new DAPSInteraction();
+		boolean validationResult=dapsInteraction.validateAuthorization(token, CONFIG_PROPERTIES.getProperty("dapsJWKSUrl"));
+		if (validationResult==false) {
+			return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).entity(serviceResult).build();			
 		}
 		serviceResult.setResult(CONFIG_PROPERTIES.getProperty("ok"));
 		executor.execute(producingThread);
