@@ -4,8 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.eng.idsa.producer</groupId>
 	<artifactId>base-producer</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>war</packaging>
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-server -->
 		<dependency>
@@ -53,6 +57,11 @@
 			<groupId>com.nimbusds</groupId>
 			<artifactId>nimbus-jose-jwt</artifactId>
 			<version>7.5.1</version>
+		</dependency>
+		<dependency>
+			<groupId>de.fraunhofer.iais.eis.ids.infomodel</groupId>
+			<artifactId>java</artifactId>
+			<version>1.0.3-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>
