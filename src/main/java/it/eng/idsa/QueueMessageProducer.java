@@ -11,6 +11,9 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 
 import org.apache.log4j.Logger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.eng.idsa.service.util.DemoDataUtils;
 
 
@@ -126,6 +129,15 @@ public class QueueMessageProducer {
         Connection connection = null;
         Session session = null;
         MessageProducer msgProducer = null;
+        ArtifactResponseMessage artifactResponseMessage=new ArtifactResponseMessage();
+        ObjectMapper mapper=new ObjectMapper();
+        String artifact=null;
+        try {
+			artifact=mapper.writeValueAsString(artifactResponseMessage);
+		} catch (JsonProcessingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         try {
             connFactory = new ActiveMQConnectionFactory(username, password, activeMqBrokerUri);
             connection = connFactory.createConnection();
@@ -134,7 +146,7 @@ public class QueueMessageProducer {
             msgProducer = session.createProducer(session.createQueue(queueName));
             int i=1;
             while(!stop) {	
-                TextMessage textMessage = session.createTextMessage(DemoDataUtils.buildDummyMessage(i));
+                TextMessage textMessage = session.createTextMessage(artifact+" *** "+DemoDataUtils.buildDummyMessage(i));
                 msgProducer.send(textMessage);
                 logger.debug(PRODUCER_SENT_MESSAGE + textMessage.getText());
                 try {
