@@ -2,7 +2,6 @@ package it.eng.idsa;
 
 import org.apache.log4j.Logger;
 
-import it.eng.idsa.service.ProviderServices;
 import it.eng.idsa.service.util.DemoDataUtils;
 
 public class MessageProducerApp {
@@ -16,12 +15,14 @@ public class MessageProducerApp {
     }
     
     public void activateProducing() {
+    	logger.debug("activateProducing");
     	String brokerUrl = DemoDataUtils.readBrokerURL();
         QueueMessageProducer queProducer = new QueueMessageProducer(brokerUrl, "admin", "admin");
-        queProducer.sendDummyMessagesContinuosly(DemoDataUtils.DESTINATION);
+        queProducer.sendDummyMessages(DemoDataUtils.DESTINATION);
     }
     
     public void deactivateProducing() {
+    	logger.debug("deactivateProducing");
     	String brokerUrl = DemoDataUtils.readBrokerURL();
         QueueMessageProducer queProducer = new QueueMessageProducer(brokerUrl, "admin", "admin");
         queProducer.destroyQueue(DemoDataUtils.DESTINATION);
