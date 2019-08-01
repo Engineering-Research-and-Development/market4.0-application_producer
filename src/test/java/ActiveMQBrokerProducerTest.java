@@ -4,7 +4,11 @@
 import it.eng.idsa.QueueMessageProducer;
 
 
-
+/**
+* The ActiveMQBrokerProducerTest class creates an ActiveMQ queue for testing
+*
+* @author  Gabriele De Luca, Milan Karajovic
+*/
 public class ActiveMQBrokerProducerTest {
 
 	public static void main(String[] args) {
@@ -13,7 +17,7 @@ public class ActiveMQBrokerProducerTest {
 		//brokerUrl="ssl://192.168.56.103:61713";
 
 		QueueMessageProducer queProducer = new QueueMessageProducer(brokerUrl, "admin", "admin");
-        queProducer.sendDummyMessages("milan");
+		queProducer.sendDummyMessages("milan");
 
 	}
 

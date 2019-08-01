@@ -1,5 +1,12 @@
 package it.eng.idsa.model.fiware.common;
 
+
+/**
+ * The AddressNormalized class supports description of FIWARE Data Models objects
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
+ */
 public class AddressNormalized {
 	private String type;
 	private Address value;

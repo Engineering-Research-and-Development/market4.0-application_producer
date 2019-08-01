@@ -5,6 +5,13 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+
+/**
+ * The DeviceModel class is a Java implementation of the DeviceModel FIWARE Data Model
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
+ */
 public class DeviceModel {
 	@NotNull(message = "{device.null.id}")
 	private String id;

@@ -4,6 +4,12 @@ import org.apache.log4j.Logger;
 
 import it.eng.idsa.service.util.DemoDataUtils;
 
+
+/**
+* The MessageProducerApp class is responsible to activate/deactivate ActiveMQ queues
+*
+* @author  Gabriele De Luca, Milan Karajovic
+*/
 public class MessageProducerApp {
 	private static Logger logger = Logger.getLogger(MessageProducerApp.class.getName());
 

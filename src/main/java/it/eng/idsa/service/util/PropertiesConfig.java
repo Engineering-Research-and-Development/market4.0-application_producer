@@ -5,6 +5,13 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.Set;
 
+
+/**
+ * The PropertiesConfig is responsible for reading configuration properties
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
+ */
 public class PropertiesConfig {
 	private final Properties configProp = new Properties();
 

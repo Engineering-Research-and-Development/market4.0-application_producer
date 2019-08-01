@@ -1,5 +1,12 @@
 package it.eng.idsa.model.fiware.common;
 
+
+/**
+ * The TimeInstant class supports description of FIWARE Data Models objects
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
+ */
 public class TimeInstant {
 	private String type;
 	private String value;

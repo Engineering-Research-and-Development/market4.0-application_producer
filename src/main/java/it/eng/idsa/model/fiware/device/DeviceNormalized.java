@@ -9,6 +9,13 @@ import it.eng.idsa.model.fiware.common.Attribute;
 import it.eng.idsa.model.fiware.common.LocationNormalized;
 import it.eng.idsa.model.fiware.common.MultiAttribute;
 
+
+/**
+ * The DeviceNormalized class is a Java implementation of the Device Normalized FIWARE Data Model
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
+ */
 public class DeviceNormalized {
 
 	@NotNull(message = "{device.null.id}")

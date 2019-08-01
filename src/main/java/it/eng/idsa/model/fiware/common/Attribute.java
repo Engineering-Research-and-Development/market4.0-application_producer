@@ -1,5 +1,12 @@
 package it.eng.idsa.model.fiware.common;
 
+
+/**
+ * The Attribute class supports description of FIWARE Data Models objects
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
+ */
 public class Attribute {
 	private String type;
 	private Object value;

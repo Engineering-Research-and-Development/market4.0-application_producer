@@ -8,6 +8,12 @@ import javax.validation.constraints.Pattern;
 import it.eng.idsa.model.fiware.common.Address;
 import it.eng.idsa.model.fiware.common.Location;
 
+/**
+ * The Device class is a Java implementation of the Device FIWARE Data Model
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
+ */
 public class Device {
 	@NotNull(message = "{device.null.id}")
 	private String id;

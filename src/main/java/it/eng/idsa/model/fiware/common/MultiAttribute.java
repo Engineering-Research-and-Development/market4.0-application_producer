@@ -2,6 +2,13 @@ package it.eng.idsa.model.fiware.common;
 
 import java.util.List;
 
+
+/**
+ * The MultiAttribute class supports description of FIWARE Data Models objects
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
+ */
 public class MultiAttribute {
 	private String type;
 	private List<Object> value;

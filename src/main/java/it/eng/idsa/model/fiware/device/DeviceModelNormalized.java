@@ -7,6 +7,13 @@ import javax.validation.constraints.Pattern;
 import it.eng.idsa.model.fiware.common.Attribute;
 import it.eng.idsa.model.fiware.common.MultiAttribute;
 
+
+/**
+ * The DeviceModelNormalized class is a Java implementation of the DeviceModel Normalized FIWARE Data Model
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
+ */
 public class DeviceModelNormalized {
 
 	@NotNull(message = "{device.null.id}")

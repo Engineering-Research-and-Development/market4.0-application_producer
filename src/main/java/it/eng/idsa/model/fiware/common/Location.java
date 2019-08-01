@@ -2,6 +2,12 @@ package it.eng.idsa.model.fiware.common;
 
 import java.util.List;
 
+/**
+ * The Location class supports description of FIWARE Data Models objects
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
+ */
 public class Location {
 	private String type;
 	private List<Object> coordinates ;

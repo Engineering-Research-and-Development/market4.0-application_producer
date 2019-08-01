@@ -30,8 +30,11 @@ import it.eng.idsa.service.util.PropertiesConfig;
 
 
 
+
 /**
- * Message producer which sends the message to ActiveMQ Broker
+ * The QueueMessageProducer sends the message to ActiveMQ Broker
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
  */
 public class QueueMessageProducer {
 	private static final String PRODUCER_SENT_MESSAGE = "Producer sent text message:";

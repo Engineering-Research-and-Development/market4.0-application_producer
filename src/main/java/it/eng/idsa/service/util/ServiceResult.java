@@ -1,5 +1,12 @@
 package it.eng.idsa.service.util;
 
+
+/**
+ * The ServiceResult class is responsible for creating a common REST service response
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
+ */
 public class ServiceResult {
 	private String result;
 	private String message;

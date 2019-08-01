@@ -1,5 +1,12 @@
 package it.eng.idsa.model.fiware.common;
 
+
+/**
+ * The Metadata class supports description of FIWARE Data Models objects
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
+ */
 public class Metadata {
 	private TimeInstant TimeInstant;
 	

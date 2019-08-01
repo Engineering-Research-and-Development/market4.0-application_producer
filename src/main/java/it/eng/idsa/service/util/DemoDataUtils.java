@@ -1,7 +1,10 @@
 package it.eng.idsa.service.util;
 
 /**
- * The constant data utility used in this Demo
+ * The DemoDataUtils class is a data utility class
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
  */
 public final class DemoDataUtils {
 	

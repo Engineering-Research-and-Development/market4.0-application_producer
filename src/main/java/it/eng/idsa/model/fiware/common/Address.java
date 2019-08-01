@@ -1,5 +1,12 @@
 package it.eng.idsa.model.fiware.common;
 
+
+/**
+ * The Address class supports description of FIWARE Data Models objects
+ * 
+ * 
+ * @author  Gabriele De Luca, Milan Karajovic
+ */
 public class Address {
 	private String streetAddress;
 	private String addressLocality;
