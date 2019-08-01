@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fraunhofer.iais.eis.ArtifactRequestMessage;
 import it.eng.idsa.DAPSInteraction;
 import it.eng.idsa.MessageProducerApp;
+import it.eng.idsa.service.util.ProducingThread;
 import it.eng.idsa.service.util.PropertiesConfig;
 import it.eng.idsa.service.util.ServiceResult;
 
@@ -40,16 +41,7 @@ public class ProviderServices {
 	private static final ExecutorService executor = Executors.newFixedThreadPool(5);
 
 
-	Thread producingThread = new Thread() {
-		public void run() {
-			try {
-				MessageProducerApp messageProducerApp=new MessageProducerApp();
-				messageProducerApp.activateProducing();
-			} catch(Exception v) {
-				logger.debug(v);
-			}
-		}  
-	};
+	
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
@@ -82,7 +74,7 @@ public class ProviderServices {
 			String body = IOUtils.toString(in, "UTF-8"); 
 			//JSON from String to Object
 			ArtifactRequestMessage message=mapper.readValue(body, ArtifactRequestMessage.class);
-
+			
 			String token=message.getAuthorizationToken().getTokenValue();
 			logger.debug("token ="+token);
 			if ((token==null)||(token.isEmpty())) {
@@ -96,7 +88,7 @@ public class ProviderServices {
 				return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).entity(serviceResult).build();			
 			}
 			serviceResult.setResult(CONFIG_PROPERTIES.getProperty("ok"));
-			executor.execute(producingThread);
+			executor.execute(new ProducingThread(message));
 			//producingThread.start();
 			return Response.status(Response.Status.ACCEPTED.getStatusCode()).entity(serviceResult).build();
 			//getTextFromMimeMultipart(multipart);

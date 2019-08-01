@@ -96,7 +96,7 @@ public class QueueMessageProducer {
 	 * queueBrowser.close(); } session.close(); connection.close(); } }
 	 */
 
-	public void sendDummyMessages(String queueName) {
+	public void sendDummyMessages(String queueName, Message requestMessage) {
 		logger.debug("QueueMessageProducer started " + this.activeMqBrokerUri);
 		ConnectionFactory connFactory = null;
 		Connection connection = null;
@@ -120,6 +120,7 @@ public class QueueMessageProducer {
 					._issuerConnector_(new URI(CONFIG_PROPERTIES.getProperty("uriSchema")+CONFIG_PROPERTIES.getProperty("uriAuthority")+CONFIG_PROPERTIES.getProperty("uriConnector")+UUID.randomUUID().toString()))
 					._issued_(xgcal)
 					._modelVersion_("1.0.3")
+					._correlationMessage_(requestMessage.getId())
 					.build();
 
 			Device device=new Device();

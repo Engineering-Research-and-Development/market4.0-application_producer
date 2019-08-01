@@ -2,6 +2,7 @@ package it.eng.idsa;
 
 import org.apache.log4j.Logger;
 
+import de.fraunhofer.iais.eis.Message;
 import it.eng.idsa.service.util.DemoDataUtils;
 
 
@@ -13,18 +14,20 @@ import it.eng.idsa.service.util.DemoDataUtils;
 public class MessageProducerApp {
 	private static Logger logger = Logger.getLogger(MessageProducerApp.class.getName());
 
-    public static void main(String[] args) {
-        String brokerUrl = DemoDataUtils.readBrokerURL();
-        QueueMessageProducer queProducer = new QueueMessageProducer(brokerUrl, "admin", "admin");
-        queProducer.sendDummyMessages(DemoDataUtils.DESTINATION);
-
-    }
+	/*
+	 * public static void main(String[] args) { String brokerUrl =
+	 * DemoDataUtils.readBrokerURL(); QueueMessageProducer queProducer = new
+	 * QueueMessageProducer(brokerUrl, "admin", "admin");
+	 * queProducer.sendDummyMessages(DemoDataUtils.DESTINATION);
+	 * 
+	 * }
+	 */
     
-    public void activateProducing() {
+    public void activateProducing(Message message) {
     	logger.debug("activateProducing");
     	String brokerUrl = DemoDataUtils.readBrokerURL();
         QueueMessageProducer queProducer = new QueueMessageProducer(brokerUrl, "admin", "admin");
-        queProducer.sendDummyMessages(DemoDataUtils.DESTINATION);
+        queProducer.sendDummyMessages(DemoDataUtils.DESTINATION, message);
     }
     
     public void deactivateProducing() {
