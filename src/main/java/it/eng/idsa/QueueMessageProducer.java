@@ -2,6 +2,8 @@ package it.eng.idsa;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 
@@ -11,6 +13,13 @@ import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -19,11 +28,14 @@ import org.apache.http.HttpEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
+import org.glassfish.jersey.client.ClientConfig;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.fraunhofer.iais.eis.ArtifactResponseMessageBuilder;
 import de.fraunhofer.iais.eis.Message;
+import de.fraunhofer.iais.eis.MessageBuilder;
 import de.fraunhofer.iais.eis.ids.jsonld.Serializer;
 import it.eng.idsa.model.fiware.device.Device;
 import it.eng.idsa.service.util.PropertiesConfig;
@@ -45,12 +57,19 @@ public class QueueMessageProducer {
 	private String activeMqBrokerUri;
 	private String username;
 	private String password;
+	private static URI connectorURI;
 
 	public QueueMessageProducer(String activeMqBrokerUri, String username, String password) {
 		super();
 		this.activeMqBrokerUri = activeMqBrokerUri;
 		this.username = username;
 		this.password = password;
+		try {
+			connectorURI=new URI(CONFIG_PROPERTIES.getProperty("uriSchema")+CONFIG_PROPERTIES.getProperty("uriAuthority")+CONFIG_PROPERTIES.getProperty("uriConnector")+UUID.randomUUID().toString());
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -117,7 +136,7 @@ public class QueueMessageProducer {
 					.newXMLGregorianCalendar(gcal);
 
 			Message message=new ArtifactResponseMessageBuilder(new URI (CONFIG_PROPERTIES.getProperty("uriSchema")+CONFIG_PROPERTIES.getProperty("uriAuthority")+CONFIG_PROPERTIES.getProperty("uriPath")+UUID.randomUUID().toString()))
-					._issuerConnector_(new URI(CONFIG_PROPERTIES.getProperty("uriSchema")+CONFIG_PROPERTIES.getProperty("uriAuthority")+CONFIG_PROPERTIES.getProperty("uriConnector")+UUID.randomUUID().toString()))
+					._issuerConnector_(connectorURI)
 					._issued_(xgcal)
 					._modelVersion_("1.0.3")
 					._correlationMessage_(requestMessage.getId())
@@ -151,6 +170,31 @@ public class QueueMessageProducer {
 			TextMessage textMessage = session.createTextMessage(EntityUtils.toString(entity));
 			msgProducer.send(textMessage);
 			logger.debug(PRODUCER_SENT_MESSAGE + textMessage.getText());
+			
+			
+			//Create Message for Clearing House
+			 gcal = new GregorianCalendar();
+			 xgcal = DatatypeFactory.newInstance()
+					.newXMLGregorianCalendar(gcal);
+			ArrayList<URI> recipientConnectors = new ArrayList<URI>();
+			recipientConnectors.add(connectorURI);
+			de.fraunhofer.iais.eis.Message idsMessage=new MessageBuilder()
+					._modelVersion_("1.0.3")
+					._issued_(xgcal)
+					._correlationMessage_(message.getId())
+					._issuerConnector_(connectorURI)
+					._recipientConnectors_(recipientConnectors)
+					._senderAgent_(null)
+					._recipientAgents_(null)
+					._transferContract_(null)
+					.build();
+			sendMessagetoClearingHouse(idsMessage);
+			
+			
+			
+			
+			
+			
 			try {
 				Thread.sleep(10000); // sleep for 10 seconds
 			} catch (InterruptedException e) {
@@ -182,5 +226,31 @@ public class QueueMessageProducer {
 		}
 	}
 
+	private void sendMessagetoClearingHouse(de.fraunhofer.iais.eis.Message message) {
+		try {
+			ClientConfig config = new ClientConfig();
+			config.connectorProvider(new ApacheConnectorProvider());
+			/*
+			 * config.property(ClientProperties.PROXY_URI, "proxy_url");
+			 * config.property(ClientProperties.PROXY_USERNAME,"user_name");
+			 * config.property(ClientProperties.PROXY_PASSWORD,"password");
+			 */
+			Client client = ClientBuilder.newClient(config);		
+
+			WebTarget webTarget = client.target(CONFIG_PROPERTIES.getProperty("clearingHouseUri"));
+
+			Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
+
+			/**OLD
+		Response response = invocationBuilder.post(Entity.json(new it.eng.idsa.ArtifactRequestMessage(token)));
+			 **/
+			logger.debug("...sending REST request to the Clearing House...");
+
+			Response response = invocationBuilder.post(Entity.entity(message ,MediaType.APPLICATION_JSON));
+			logger.debug("...done "+response.getStatus());
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }
